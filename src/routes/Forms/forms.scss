@@ -1,0 +1,13 @@
+.FormsPage {
+  padding: 4em;
+
+  .PocForm {
+    max-width: 50ch;
+
+    &__buttons {
+      display: flex;
+      flex-direction: row;
+      gap: 1em;
+    }
+  }
+}
