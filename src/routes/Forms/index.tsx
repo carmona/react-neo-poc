@@ -9,6 +9,7 @@ interface FormValues {
   userEmail: string;
   phoneNumber: string;
   userPassword: string;
+  userDob: string;
 }
 
 const Forms: React.FC = () => {
@@ -17,11 +18,19 @@ const Forms: React.FC = () => {
     userEmail: '',
     phoneNumber: '',
     userPassword: '',
+    userDob: '',
   };
 
   const validationSchema = Yup.object({
     userName: Yup.string().trim().required('Name is required'),
-    userEmail: Yup.string().trim().email('Invalid email address').required('Email is required'),
+    userEmail: Yup.string()
+      .trim()
+      .matches(
+        // Regex from RFC2822 standard
+        /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+        'Invalid email address',
+      )
+      .required('Email is required'),
     phoneNumber: Yup.string()
       .trim()
       .matches(/^[0-9]+$/, 'Phone number is not valid')
@@ -36,6 +45,15 @@ const Forms: React.FC = () => {
         `Password must contain at least 8 characters and include one of each:
         uppercase letter, lowercase letter, number, special character`,
       ),
+    userDob: Yup.date()
+      .min(new Date(1900, 0, 1), 'Date of birth cannot be earlier than 1900')
+      // set max date so that user is at least 18 years old
+      .max(
+        new Date(new Date().getFullYear() - 18, new Date().getMonth(), new Date().getDate()),
+        'You must be at least 18 years old',
+      )
+      .typeError('Invalid date format')
+      .required('Date of birth is required'),
   });
 
   return (
@@ -67,7 +85,7 @@ const Forms: React.FC = () => {
               required
               helperText={errors.userName}
               error={touched.userName && !!errors.userName}
-              startAddon={<Icon icon="user" aria-label="input icon" />}
+              startAddon={<Icon icon="user" aria-label="input icon for user name" />}
             />
             <Field
               as={TextInput}
@@ -80,6 +98,7 @@ const Forms: React.FC = () => {
               required
               helperText={errors.userEmail}
               error={touched.userEmail && !!errors.userEmail}
+              startAddon={<Icon icon="email" aria-label="input icon for email" />}
             />
             <Field
               as={TextInput}
@@ -94,6 +113,7 @@ const Forms: React.FC = () => {
               error={touched.phoneNumber && !!errors.phoneNumber}
               onKeyPress={(e: KeyboardEvent) => !/[0-9]/.test(e.key) && e.preventDefault()}
               maxLength={9}
+              startAddon={<Icon icon="voice" aria-label="input icon for phone number" />}
             />
             <Field
               as={TextInput}
@@ -105,6 +125,18 @@ const Forms: React.FC = () => {
               required
               helperText={errors.userPassword}
               error={touched.userPassword && !!errors.userPassword}
+              startAddon={<Icon icon="lock" aria-label="input icon for password" />}
+            />
+            <Field
+              as={TextInput}
+              disabled={isSubmitting}
+              label="Date of Birth"
+              name="userDob"
+              type="date"
+              placeholder="Select your date of birth."
+              required
+              helperText={errors.userDob}
+              error={touched.userDob && !!errors.userDob}
             />
             <div className="PocForm__buttons">
               <Button id="btn-submit" variant="primary" type="submit" disabled={isSubmitting}>

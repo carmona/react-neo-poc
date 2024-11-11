@@ -2,10 +2,11 @@
   padding: 4em;
 
   .PocForm {
-    max-width: 50ch;
     display: flex;
     flex-direction: column;
     gap: 1em;
+    margin-block-start: 1em;
+    max-width: 50ch;
 
     &__buttons {
       display: flex;
