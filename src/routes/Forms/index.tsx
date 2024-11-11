@@ -10,6 +10,7 @@ interface FormValues {
   phoneNumber: string;
   userPassword: string;
   userDob: string;
+  creditCard: string;
 }
 
 const Forms: React.FC = () => {
@@ -19,6 +20,7 @@ const Forms: React.FC = () => {
     phoneNumber: '',
     userPassword: '',
     userDob: '',
+    creditCard: '',
   };
 
   const validationSchema = Yup.object({
@@ -54,6 +56,13 @@ const Forms: React.FC = () => {
       )
       .typeError('Invalid date format')
       .required('Date of birth is required'),
+    creditCard: Yup.string()
+      .trim()
+      .matches(
+        /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$/,
+        'This is not a valid credit card number.',
+      )
+      .required('Credit card number is required'),
   });
 
   return (
@@ -69,7 +78,7 @@ const Forms: React.FC = () => {
           setSubmitting(true);
           setTimeout(() => {
             setSubmitting(false);
-          }, 1000);
+          }, 2000);
         }}
       >
         {({ isSubmitting, errors, touched }) => (
@@ -137,12 +146,28 @@ const Forms: React.FC = () => {
               required
               helperText={errors.userDob}
               error={touched.userDob && !!errors.userDob}
+              startAddon={<Icon icon="calendar" aria-label="input icon for date of birth" />}
+            />
+            <Field
+              as={TextInput}
+              disabled={isSubmitting}
+              label="Credit Card Number"
+              name="creditCard"
+              type="text"
+              autoComplete="cc-number"
+              placeholder="Type your credit card number here."
+              required
+              helperText={errors.creditCard}
+              error={touched.creditCard && !!errors.creditCard}
+              onKeyPress={(e: KeyboardEvent) => !/[0-9]/.test(e.key) && e.preventDefault()}
+              maxLength={16}
+              startAddon={<Icon icon="credit-card" aria-label="input icon for credit card" />}
             />
             <div className="PocForm__buttons">
               <Button id="btn-submit" variant="primary" type="submit" disabled={isSubmitting}>
                 Submit
               </Button>
-              <Button id="btnCancel" variant="secondary" type="reset">
+              <Button id="btnCancel" variant="secondary" type="reset" disabled={isSubmitting}>
                 Reset
               </Button>
             </div>
