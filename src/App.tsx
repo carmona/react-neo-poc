@@ -4,6 +4,7 @@ import Router from './routes';
 import logoImage from './assets/logo-condensed-light.svg';
 
 import './styles/vendors.scss';
+import './styles/main.scss';
 
 const App = () => {
   const theLogo = (
@@ -17,6 +18,7 @@ const App = () => {
         <TopNav.IconButton aria-label="notifications" icon="notifications-on" />
         <TopNav.LinkButton href="/">Home</TopNav.LinkButton>
         <TopNav.LinkButton href="/forms">Forms</TopNav.LinkButton>
+        <TopNav.LinkButton href="/tables">Tables</TopNav.LinkButton>
         <TopNav.Avatar avatar={<Avatar initials="FC" />} />
       </TopNav>
       <Router />
