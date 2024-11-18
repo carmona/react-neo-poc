@@ -66,9 +66,9 @@ const Forms: React.FC = () => {
   });
 
   return (
-    <div className="FormsPage">
-      <h2>Forms page</h2>
-      <h4>Inline Form</h4>
+    <div className="FormsPage DemoPage">
+      <h1>Forms</h1>
+      <h2>Inline Form with validation</h2>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
