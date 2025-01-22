@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './Home';
 import Forms from './Forms';
 import TablesPage from './Tables/TablesPage';
+import WidgetsPage from './Widgets/WidgetsPage';
 
 const Router: FunctionComponent = () => (
   <Routes>
@@ -22,6 +23,14 @@ const Router: FunctionComponent = () => (
       element={
         <Suspense fallback={<Spin />}>
           <TablesPage />
+        </Suspense>
+      }
+    />
+    <Route
+      path="widgets"
+      element={
+        <Suspense fallback={<Spin />}>
+          <WidgetsPage />
         </Suspense>
       }
     />

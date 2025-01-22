@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, Image, TopNav } from '@avaya/neo-react';
+import { Image, TopNav } from '@avaya/neo-react';
 import Router from './routes';
 import logoImage from './assets/logo-condensed-light.svg';
 
@@ -15,11 +15,12 @@ const App = () => {
   return (
     <main>
       <TopNav aria-label="Main header" logo={theLogo}>
-        <TopNav.IconButton aria-label="notifications" icon="notifications-on" />
+        {/* <TopNav.IconButton aria-label="notifications" icon="notifications-on" /> */}
         <TopNav.LinkButton href="/">Home</TopNav.LinkButton>
         <TopNav.LinkButton href="/forms">Forms</TopNav.LinkButton>
         <TopNav.LinkButton href="/tables">Tables</TopNav.LinkButton>
-        <TopNav.Avatar avatar={<Avatar initials="FC" />} />
+        <TopNav.LinkButton href="/widgets">Widgets</TopNav.LinkButton>
+        {/* <TopNav.Avatar avatar={<Avatar initials="FC" />} /> */}
       </TopNav>
       <Router />
     </main>
