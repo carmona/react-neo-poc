@@ -1,8 +1,8 @@
 import { Table, Button } from '@avaya/neo-react';
 import React from 'react';
-import './AddressBook.scss';
+import './ContactsList.scss';
 
-const AddressBook: React.FC = () => {
+const ContactsList: React.FC = () => {
   const [isTransferDisabled] = React.useState(false);
   const [isCallDisabled] = React.useState(false);
   const columnDefs = [
@@ -45,16 +45,34 @@ const AddressBook: React.FC = () => {
   ];
   const rowData = [
     {
-      id: '20',
+      id: '1',
       label: 'Mandalay',
       name: 'Mandalay Bay',
       number: '7624567876',
     },
     {
-      id: '30',
+      id: '2',
       label: 'Excalibur',
       name: 'Excalibur Hotel',
       number: '1234567890',
+    },
+    {
+      id: '3',
+      label: 'Luxor',
+      name: 'Luxor Hotel',
+      number: '736724578',
+    },
+    {
+      id: '4',
+      label: 'Bellagio',
+      name: 'Bellagio Hotel',
+      number: '9817408516',
+    },
+    {
+      id: '5',
+      label: 'Aria',
+      name: 'Aria Hotel',
+      number: '5341857915',
     },
   ];
   return (
@@ -73,4 +91,4 @@ const AddressBook: React.FC = () => {
   );
 };
 
-export default AddressBook;
+export default ContactsList;

@@ -3,14 +3,14 @@ import './widgets.scss';
 import { Widget, Icon, WidgetHeader, WidgetContent } from '@avaya/neo-react';
 // import {  } from 'antd/es/layout/layout';
 // import AddressBook from './AdressBook';
-import AddressWidget from './AddressWidget';
+import ContactsWidget from './ContactsWidget';
 
 const WidgetsPage: React.FC = () => (
   <div className="WidgetsPage DemoPage">
     <h1>Widgets</h1>
     <h2>MGM</h2>
-    <h3>AddressBook Widget</h3>
-    <AddressWidget />
+    <h3>Contacts Widget</h3>
+    <ContactsWidget />
 
     <h2>NEO</h2>
     <h3>default widget</h3>

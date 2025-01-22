@@ -1,17 +1,17 @@
 import React from 'react';
 import { Widget, WidgetHeader, Icon, WidgetContent } from '@avaya/neo-react';
-import AddressBook from './AdressBook';
+import ContactsList from './ContactsList';
 
-const AddressWidget: React.FC = () => (
+const ContactsWidget: React.FC = () => (
   <Widget>
     <WidgetHeader>
       <Icon icon="call" aria-label="phone" />
-      <p>Address Book</p>
+      <p>Contacts List</p>
     </WidgetHeader>
     <WidgetContent>
-      <AddressBook />
+      <ContactsList />
     </WidgetContent>
   </Widget>
 );
 
-export default AddressWidget;
+export default ContactsWidget;
