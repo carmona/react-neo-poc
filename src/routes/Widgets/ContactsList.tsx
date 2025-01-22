@@ -1,4 +1,4 @@
-import { Table, Button } from '@avaya/neo-react';
+import { Table, Button, Tooltip } from '@avaya/neo-react';
 import React from 'react';
 import './ContactsList.scss';
 
@@ -20,25 +20,37 @@ const ContactsList: React.FC = () => {
       Header: 'Actions',
       // eslint-disable-next-line react/no-unstable-nested-components
       Cell: ({ row }: any) => (
-        <div className="AddressBook__actions">
-          <Button
-            variant="primary"
-            disabled={isTransferDisabled}
-            icon="call-transfer"
-            onClick={() => {
-              // eslint-disable-next-line no-alert
-              alert(`Clicked Transfer to ${row.original.number}`);
-            }}
-          />
-          <Button
-            variant="primary"
-            disabled={isCallDisabled}
-            icon="call"
-            onClick={() => {
-              // eslint-disable-next-line no-alert
-              alert(`Clicked call on ${row.original.number}`);
-            }}
-          />
+        <div className="ContactsList__actions">
+          <Tooltip
+            label={`Transfer current call to ${row.original.name} (${row.original.number})`}
+            position="left"
+            multiline
+          >
+            <Button
+              variant="primary"
+              disabled={isTransferDisabled}
+              icon="call-transfer"
+              onClick={() => {
+                // eslint-disable-next-line no-alert
+                alert(`Clicked Transfer to ${row.original.number}`);
+              }}
+            />
+          </Tooltip>
+          <Tooltip
+            label={`Start a call to ${row.original.name} (${row.original.number})`}
+            position="left"
+            multiline
+          >
+            <Button
+              variant="primary"
+              disabled={isCallDisabled}
+              icon="call"
+              onClick={() => {
+                // eslint-disable-next-line no-alert
+                alert(`Clicked call on ${row.original.number}`);
+              }}
+            />
+          </Tooltip>
         </div>
       ),
     },
@@ -76,13 +88,12 @@ const ContactsList: React.FC = () => {
     },
   ];
   return (
-    <div className="AddressBook">
+    <div className="ContactsList">
       <Table
-        className="AddressBook__table"
+        className="ContactsList__table"
         data={rowData}
         columns={columnDefs}
         resizableColumns
-        showPagination
         draggableRows
         // allowToggleColumnVisibility
         initialStatePageSize={null}

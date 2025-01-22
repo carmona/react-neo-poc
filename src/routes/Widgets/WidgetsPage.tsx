@@ -2,7 +2,6 @@ import React from 'react';
 import './widgets.scss';
 import { Widget, Icon, WidgetHeader, WidgetContent } from '@avaya/neo-react';
 // import {  } from 'antd/es/layout/layout';
-// import AddressBook from './AdressBook';
 import ContactsWidget from './ContactsWidget';
 
 const WidgetsPage: React.FC = () => (
