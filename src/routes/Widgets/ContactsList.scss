@@ -2,3 +2,11 @@
   display: flex;
   gap: 1em;
 }
+
+.ContactsList {
+  .neo-table__actions--left {
+    .neo-input-group {
+      min-width: 200px;
+    }
+  }
+}

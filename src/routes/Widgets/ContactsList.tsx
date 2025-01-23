@@ -1,10 +1,19 @@
-import { Table, Button, Tooltip } from '@avaya/neo-react';
-import React from 'react';
+import { Table, Button, Tooltip, Select, SelectOption } from '@avaya/neo-react';
+import React, { useEffect } from 'react';
 import './ContactsList.scss';
+import { MOCK_DATA, findGroupById } from './mock-data';
 
 const ContactsList: React.FC = () => {
   const [isTransferDisabled] = React.useState(false);
   const [isCallDisabled] = React.useState(false);
+  const [rowData, setRowData] = React.useState<any[]>([]);
+  const [selectedGroupID, setSelectedGroupID] = React.useState('1');
+  useEffect(() => {
+    const group = findGroupById(selectedGroupID);
+    if (group) {
+      setRowData(group.contacts);
+    }
+  }, [selectedGroupID]);
   const columnDefs = [
     {
       Header: 'Name',
@@ -55,38 +64,26 @@ const ContactsList: React.FC = () => {
       ),
     },
   ];
-  const rowData = [
-    {
-      id: '1',
-      label: 'Mandalay',
-      name: 'Mandalay Bay',
-      number: '7624567876',
-    },
-    {
-      id: '2',
-      label: 'Excalibur',
-      name: 'Excalibur Hotel',
-      number: '1234567890',
-    },
-    {
-      id: '3',
-      label: 'Luxor',
-      name: 'Luxor Hotel',
-      number: '736724578',
-    },
-    {
-      id: '4',
-      label: 'Bellagio',
-      name: 'Bellagio Hotel',
-      number: '9817408516',
-    },
-    {
-      id: '5',
-      label: 'Aria',
-      name: 'Aria Hotel',
-      number: '5341857915',
-    },
-  ];
+
+  const groupSelector = (
+    <Select
+      aria-label="Select a group"
+      size="md"
+      value={selectedGroupID}
+      onChange={(value) => {
+        if (value) {
+          setSelectedGroupID(value.toString());
+        }
+      }}
+    >
+      {MOCK_DATA.groups.map((group) => (
+        <SelectOption key={group.id} value={group.id}>
+          {group.name}
+        </SelectOption>
+      ))}
+    </Select>
+  );
+
   return (
     <div className="ContactsList">
       <Table
@@ -97,6 +94,7 @@ const ContactsList: React.FC = () => {
         draggableRows
         // allowToggleColumnVisibility
         initialStatePageSize={null}
+        customActionsNode={groupSelector}
       />
     </div>
   );
