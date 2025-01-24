@@ -97,11 +97,15 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
         }
       }}
     >
-      {groups.map((group: ContactGroup) => (
-        <SelectOption key={group.id} value={group.name}>
-          {group.name}
-        </SelectOption>
-      ))}
+      {groups.length >= 1 ? (
+        groups?.map((group: ContactGroup) => (
+          <SelectOption key={group.id} value={group.name}>
+            {group.name}
+          </SelectOption>
+        ))
+      ) : (
+        <span>empty</span>
+      )}
     </Select>
   );
 

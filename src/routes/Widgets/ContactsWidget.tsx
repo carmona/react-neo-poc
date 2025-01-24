@@ -5,7 +5,7 @@ import useCsv from './useCsv.ts';
 import { ContactGroup } from './Contact.types.ts';
 
 const ContactsWidget: React.FC = () => {
-  const sourceUrl = '/assets/contacts.csv';
+  const sourceUrl = 'http://127.0.0.1:8080/assets/contacts.csv';
   const title = 'Contacts List';
   const groupsList = useCsv(sourceUrl) as ContactGroup[];
   useEffect(() => {
