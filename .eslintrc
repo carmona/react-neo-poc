@@ -5,26 +5,25 @@
     "airbnb/hooks",
     "airbnb-typescript",
     "plugin:eslint-comments/recommended",
-    "prettier"
+    "prettier",
   ],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
   },
   "env": {
     "browser": true,
     "jest": true,
-    "es6": true
+    "es6": true,
   },
-  "plugins": [
-    "prettier"
-  ],
+  "plugins": ["prettier"],
   "rules": {
     "react/function-component-definition": "off",
     "@typescript-eslint/indent": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx", ".ts", ".tsx", ".mts"] }],
     "react/prop-types": "off",
     "react/button-has-type": "off",
+    "import/extensions": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -33,10 +32,10 @@
           "config-overrides.js",
           "src/setupTests.ts",
           "src/components/**/*.stories.tsx",
-          "src/**/*.test.{ts,tsx}"
-        ]
-      }
+          "src/**/*.test.{ts,tsx}",
+        ],
+      },
     ],
-    "prettier/prettier": ["error"]
-  }
+    "prettier/prettier": ["error"],
+  },
 }

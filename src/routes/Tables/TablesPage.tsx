@@ -1,7 +1,7 @@
 import React from 'react';
-import GridResizeReorder from './AgGridResize';
+import GridResizeReorder from './AgGridResize.tsx';
 import './tables.scss';
-import NeoTableExample from './NeoResize';
+import NeoTableExample from './NeoResize.tsx';
 
 const TablesPage: React.FC = () => (
   <div className="TablesPage DemoPage">

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState, AppThunk } from '..';
+import type { RootState, AppThunk } from '../index.ts';
 
 // dummy api
 export function fetchCount(amount = 1) {
@@ -88,7 +88,7 @@ export const selectCount = (state: RootState) => state.counter.value;
 // Here's an example of conditionally dispatching actions based on current state.
 export const incrementIfOdd =
   (amount: number): AppThunk =>
-  (dispatch, getState) => {
+  (dispatch: any, getState: any) => {
     const currentValue = selectCount(getState());
     if (currentValue % 2 === 1) {
       dispatch(incrementByAmount(amount));

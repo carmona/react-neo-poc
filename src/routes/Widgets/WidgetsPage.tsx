@@ -2,7 +2,7 @@ import React from 'react';
 import './widgets.scss';
 import { Widget, Icon, WidgetHeader, WidgetContent } from '@avaya/neo-react';
 // import {  } from 'antd/es/layout/layout';
-import ContactsWidget from './ContactsWidget';
+import ContactsWidget from './ContactsWidget.tsx';
 
 const WidgetsPage: React.FC = () => (
   <div className="WidgetsPage DemoPage">

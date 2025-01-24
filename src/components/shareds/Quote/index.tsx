@@ -1,5 +1,5 @@
 import React from 'react';
-import randomIntFromInterval from '../../../common/random-number.helper';
+import randomIntFromInterval from '../../../common/random-number.helper.ts';
 
 const Quote = () => {
   const quotes = [

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { RootState } from '..';
-import request, { ERequestStatus } from '../../common/request';
+import type { RootState } from '../index.ts';
+import request, { ERequestStatus } from '../../common/request.ts';
 
 export interface IUser {
   id: string;

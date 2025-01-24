@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, TopNav } from '@avaya/neo-react';
-import Router from './routes';
+import Router from './routes/index.tsx';
 import logoImage from './assets/logo-condensed-light.svg';
 
 import './styles/vendors.scss';

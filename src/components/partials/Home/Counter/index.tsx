@@ -1,13 +1,13 @@
 import { Button, InputNumber } from 'antd';
 import React from 'react';
 
-import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../../store/hooks.ts';
 import {
   setAmount,
   incrementAsync,
   incrementIfOdd,
   selectCount,
-} from '../../../../store/slices/counter.slice';
+} from '../../../../store/slices/counter.slice.ts';
 
 const Counter = () => {
   const count = useAppSelector(selectCount);

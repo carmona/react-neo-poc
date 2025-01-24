@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Space, Table } from 'antd';
 import { DeleteOutlined, EditOutlined, UserAddOutlined } from '@ant-design/icons';
 
-import { useAppSelector, useAppDispatch } from '../../../../store/hooks';
+import { useAppSelector, useAppDispatch } from '../../../../store/hooks.ts';
 import {
   addUser,
   deleteUser,
@@ -11,8 +11,8 @@ import {
   selectStatus,
   selectUsers,
   updateUser,
-} from '../../../../store/slices/user.slice';
-import { ERequestStatus } from '../../../../common/request';
+} from '../../../../store/slices/user.slice.ts';
+import { ERequestStatus } from '../../../../common/request.ts';
 
 const UserList = () => {
   const userList = useAppSelector(selectUsers);

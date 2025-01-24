@@ -2,10 +2,10 @@ import React, { FunctionComponent, Suspense } from 'react';
 import { Spin } from 'antd';
 import { Routes, Route } from 'react-router-dom';
 
-import Home from './Home';
-import Forms from './Forms';
-import TablesPage from './Tables/TablesPage';
-import WidgetsPage from './Widgets/WidgetsPage';
+import Home from './Home/index.tsx';
+import Forms from './Forms/index.tsx';
+import TablesPage from './Tables/TablesPage.tsx';
+import WidgetsPage from './Widgets/WidgetsPage.tsx';
 
 const Router: FunctionComponent = () => (
   <Routes>
