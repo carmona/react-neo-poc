@@ -1,19 +1,73 @@
 import { Table, Button, Tooltip, Select, SelectOption } from '@avaya/neo-react';
 import React, { useEffect } from 'react';
 import './ContactsList.scss';
-import { MOCK_DATA, findGroupById } from './mock-data';
+import { Contact, ContactGroup } from './Contact.types.ts';
 
-const ContactsList: React.FC = () => {
+interface ContactsListProps {
+  groups: ContactGroup[];
+}
+
+const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps) => {
+  // variable initiators using hooks
   const [isTransferDisabled] = React.useState(false);
   const [isCallDisabled] = React.useState(false);
-  const [rowData, setRowData] = React.useState<any[]>([]);
-  const [selectedGroupID, setSelectedGroupID] = React.useState('1');
+  const [rowData, setRowData] = React.useState<Contact[]>([] as Contact[]);
+  const defaultSelectedGroup = groups[0]?.name || '';
+  const [selectedGroupName, setSelectedGroupName] = React.useState(defaultSelectedGroup);
+
+  // this will run once the groups have been loaded
   useEffect(() => {
-    const group = findGroupById(selectedGroupID);
+    if (groups.length) {
+      setSelectedGroupName(groups[0]?.name);
+    }
+  }, [groups]);
+
+  // this will run every time the selected group has changed
+  useEffect(() => {
+    // at first run, groups will be empty
+    if (!groups.length) return;
+    const group = groups.find((g) => g.name === selectedGroupName);
     if (group) {
       setRowData(group.contacts);
     }
-  }, [selectedGroupID]);
+  }, [groups, selectedGroupName]);
+
+  // template for the actions column
+  const actionsCell = ({ row }: any) => (
+    <div className="ContactsList__actions">
+      <Tooltip
+        label={`Transfer current call to ${row.original.name} (${row.original.number})`}
+        position="left"
+        multiline
+      >
+        <Button
+          variant="primary"
+          disabled={isTransferDisabled}
+          icon="call-transfer"
+          onClick={() => {
+            // eslint-disable-next-line no-alert
+            alert(`Clicked Transfer to ${row.original.number}`);
+          }}
+        />
+      </Tooltip>
+      <Tooltip
+        label={`Start a call to ${row.original.name} (${row.original.number})`}
+        position="left"
+        multiline
+      >
+        <Button
+          variant="primary"
+          disabled={isCallDisabled}
+          icon="call"
+          onClick={() => {
+            // eslint-disable-next-line no-alert
+            alert(`Clicked call on ${row.original.number}`);
+          }}
+        />
+      </Tooltip>
+    </div>
+  );
+
   const columnDefs = [
     {
       Header: 'Name',
@@ -27,63 +81,31 @@ const ContactsList: React.FC = () => {
     },
     {
       Header: 'Actions',
-      // eslint-disable-next-line react/no-unstable-nested-components
-      Cell: ({ row }: any) => (
-        <div className="ContactsList__actions">
-          <Tooltip
-            label={`Transfer current call to ${row.original.name} (${row.original.number})`}
-            position="left"
-            multiline
-          >
-            <Button
-              variant="primary"
-              disabled={isTransferDisabled}
-              icon="call-transfer"
-              onClick={() => {
-                // eslint-disable-next-line no-alert
-                alert(`Clicked Transfer to ${row.original.number}`);
-              }}
-            />
-          </Tooltip>
-          <Tooltip
-            label={`Start a call to ${row.original.name} (${row.original.number})`}
-            position="left"
-            multiline
-          >
-            <Button
-              variant="primary"
-              disabled={isCallDisabled}
-              icon="call"
-              onClick={() => {
-                // eslint-disable-next-line no-alert
-                alert(`Clicked call on ${row.original.number}`);
-              }}
-            />
-          </Tooltip>
-        </div>
-      ),
+      Cell: actionsCell,
     },
   ];
 
+  // template for the group selector dropdown
   const groupSelector = (
     <Select
       aria-label="Select a group"
       size="md"
-      value={selectedGroupID}
+      value={selectedGroupName}
       onChange={(value) => {
         if (value) {
-          setSelectedGroupID(value.toString());
+          setSelectedGroupName(value.toString());
         }
       }}
     >
-      {MOCK_DATA.groups.map((group) => (
-        <SelectOption key={group.id} value={group.id}>
+      {groups.map((group: ContactGroup) => (
+        <SelectOption key={group.id} value={group.name}>
           {group.name}
         </SelectOption>
       ))}
     </Select>
   );
 
+  // actual component template
   return (
     <div className="ContactsList">
       <Table
@@ -91,8 +113,6 @@ const ContactsList: React.FC = () => {
         data={rowData}
         columns={columnDefs}
         resizableColumns
-        draggableRows
-        // allowToggleColumnVisibility
         initialStatePageSize={null}
         customActionsNode={groupSelector}
       />

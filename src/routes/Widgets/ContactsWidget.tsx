@@ -1,17 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Widget, WidgetHeader, Icon, WidgetContent } from '@avaya/neo-react';
-import ContactsList from './ContactsList';
+import ContactsList from './ContactsList.tsx';
+import useCsv from './useCsv.ts';
+import { ContactGroup } from './Contact.types.ts';
 
-const ContactsWidget: React.FC = () => (
-  <Widget>
-    <WidgetHeader>
-      <Icon icon="call" aria-label="phone" />
-      <p>Contacts List</p>
-    </WidgetHeader>
-    <WidgetContent>
-      <ContactsList />
-    </WidgetContent>
-  </Widget>
-);
+const ContactsWidget: React.FC = () => {
+  const sourceUrl = '/assets/contacts.csv';
+  const title = 'Contacts List';
+  const groupsList = useCsv(sourceUrl) as ContactGroup[];
+  useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log('Groups List:', groupsList);
+  }, [groupsList]);
+  return (
+    <Widget>
+      <WidgetHeader>
+        <Icon icon="call" aria-label="phone" />
+        <p>{title}</p>
+      </WidgetHeader>
+      <WidgetContent>
+        <ContactsList groups={groupsList} />
+      </WidgetContent>
+    </Widget>
+  );
+};
 
 export default ContactsWidget;
