@@ -1,0 +1,10 @@
+{
+  "name": "MGM Contacts Demo",
+  "description": "Demo version of MGM Contacts widget",
+  "icon": "call",
+  "element": "<avaya-widget-mgm-contacts></avaya-widget-mgm-contacts>",
+  "version": "0.1.0",
+  "files": ["mgm-contacts.js", "mgm-contacts.css", "mgm-contacts2.css"],
+  "tags": ["demo", " widget", " example", " other"],
+  "override_url": "http://127.0.0.1:8080/"
+}
