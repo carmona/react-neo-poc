@@ -52,11 +52,3 @@ const MOCK_DATA = {
 };
 const findGroupById = (id: string) => MOCK_DATA.groups.find((group) => group.id === id);
 export { MOCK_DATA, findGroupById };
-
-// CSV format
-// Bellagio, Call Center myvegas.com, 917025556666,
-// Bellagio, Bellagio Accts Receivable, 917025557777,
-// Mandalay Hotel, Mandalay Front Desk, 917045558888,
-// Mandalay Hotel, Mandalay Accts Receivable, 917045559999,
-// Luxor Hotel, Call Center Home, 917024446666,
-// Luxor Hotel, Luxor Hotel Home Desk, 917024447777,
