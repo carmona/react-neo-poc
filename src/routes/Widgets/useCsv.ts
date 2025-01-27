@@ -19,7 +19,7 @@ const groupDataByGroupName = (data: any) => {
         contacts: [item],
       });
     } else {
-      group.contacts.push(item);
+      group.contacts.push({ ...item, id: group.contacts.length });
     }
   }, {});
 
