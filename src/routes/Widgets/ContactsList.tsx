@@ -1,12 +1,21 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Table, Button, Tooltip, Select, SelectOption } from '@avaya/neo-react';
 import React, { useEffect } from 'react';
 import './ContactsList.scss';
 import { Contact, ContactGroup } from './Contact.types.ts';
+import { getWidgetApi, getActiveInteraction } from './widgetApiTools.ts';
 
 interface ContactsListProps {
   groups: ContactGroup[];
 }
 
+const log = (...args: any[]) => {
+  // eslint-disable-next-line no-console
+  console.info('MGM: ', ...args);
+};
+
+// main component controller
 const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps) => {
   // variable initiators using hooks
   const [isTransferDisabled] = React.useState(false);
@@ -14,11 +23,22 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
   const [rowData, setRowData] = React.useState<Contact[]>([] as Contact[]);
   const defaultSelectedGroup = groups[0]?.name || '';
   const [selectedGroupName, setSelectedGroupName] = React.useState(defaultSelectedGroup);
+  const api = getWidgetApi();
 
   // this will run once the groups have been loaded
   useEffect(() => {
+    const handleInteractionEvent = (event: any) => {
+      log('onAnyInteractionEvent', event);
+      const activeInteraction = getActiveInteraction(api);
+      if (activeInteraction) {
+        log('Active interaction found:', activeInteraction);
+      }
+    };
+
     if (groups.length) {
       setSelectedGroupName(groups[0]?.name);
+      api.onDataEvent('onAnyInteractionEvent', handleInteractionEvent);
+      api.onDataEvent('onAnyInteractionEndedEvent', handleInteractionEvent);
     }
   }, [groups]);
 
@@ -28,6 +48,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
     if (!groups.length) return;
     const group = groups.find((g) => g.name === selectedGroupName);
     if (group) {
+      log('Setting row data for group:', group.contacts);
       setRowData(group.contacts);
     }
   }, [groups, selectedGroupName]);
@@ -45,8 +66,13 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
           disabled={isTransferDisabled}
           icon="call-transfer"
           onClick={() => {
-            // eslint-disable-next-line no-alert
-            alert(`Clicked Transfer to ${row.original.number}`);
+            const activeInteraction = getActiveInteraction(api);
+            if (activeInteraction) {
+              const interactionApi = getWidgetApi(activeInteraction?.id);
+              interactionApi.consult(row.original.number);
+            } else {
+              log('No active interaction found');
+            }
           }}
         />
       </Tooltip>
@@ -60,8 +86,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
           disabled={isCallDisabled}
           icon="call"
           onClick={() => {
-            // eslint-disable-next-line no-alert
-            alert(`Clicked call on ${row.original.number}`);
+            api.startVoiceInteraction(row.original.number);
           }}
         />
       </Tooltip>
@@ -117,7 +142,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
         data={rowData}
         columns={columnDefs}
         resizableColumns
-        initialStatePageSize={null}
+        initialStatePageSize={100}
         customActionsNode={groupSelector}
       />
     </div>
