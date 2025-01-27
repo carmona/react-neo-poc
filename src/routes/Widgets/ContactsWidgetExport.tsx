@@ -5,6 +5,7 @@ import ContactsWidget from './ContactsWidget.tsx';
 export default class ContactsWidgetExport extends HTMLElement {
   connectedCallback() {
     const mountPoint = document.createElement('div');
+    mountPoint.classList.add('mgm-contacts-widget-container');
     const shadow = this.attachShadow({ mode: 'open' });
     const style = document.createElement('style');
     // TODO: change this URL to be dynamic
