@@ -4,8 +4,14 @@ import ContactsList from './ContactsList.tsx';
 import useCsv from './useCsv.ts';
 import { ContactGroup } from './Contact.types.ts';
 
-const ContactsWidget: React.FC = () => {
-  const sourceUrl = 'http://127.0.0.1:8080/assets/contacts.csv';
+interface ContactsWidgetProps {
+  // eslint-disable-next-line react/require-default-props
+  baseUrl?: string | null;
+}
+
+// TODO: move dev url to env file
+const ContactsWidget: React.FC<ContactsWidgetProps> = ({ baseUrl = 'http://127.0.0.1:8080' }) => {
+  const sourceUrl = `${baseUrl}/assets/contacts.csv`;
   const title = 'Contacts List';
   const groupsList = useCsv(sourceUrl) as ContactGroup[];
   useEffect(() => {
