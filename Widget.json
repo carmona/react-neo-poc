@@ -2,7 +2,7 @@
   "name": "MGM Contacts Demo",
   "description": "Demo version of MGM Contacts widget",
   "icon": "call",
-  "element": "<avaya-widget-mgm-contacts base-url='https://base.com/'></avaya-widget-mgm-contacts>",
+  "element": "<avaya-widget-mgm-contacts base-url='https://base.com'></avaya-widget-mgm-contacts>",
   "version": "0.1.0",
   "files": ["mgm-contacts.js", "mgm-contacts.css", "mgm-contacts2.css"],
   "tags": ["demo", " widget", " example", " other"],
