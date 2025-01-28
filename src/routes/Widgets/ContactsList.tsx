@@ -17,28 +17,34 @@ const log = (...args: any[]) => {
 
 // main component controller
 const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps) => {
+  const defaultSelectedGroup = groups[0]?.name || '';
+  const widgetApi = getWidgetApi();
+
   // variable initiators using hooks
-  const [isTransferDisabled] = React.useState(false);
+  const [hasActiveCall, setHasActiveCall] = React.useState(false);
+  const [isConsulting, setIsConsulting] = React.useState(false);
   const [isCallDisabled] = React.useState(false);
   const [rowData, setRowData] = React.useState<Contact[]>([] as Contact[]);
-  const defaultSelectedGroup = groups[0]?.name || '';
   const [selectedGroupName, setSelectedGroupName] = React.useState(defaultSelectedGroup);
-  const api = getWidgetApi();
 
   // this will run once the groups have been loaded
   useEffect(() => {
     const handleInteractionEvent = (event: any) => {
       log('onAnyInteractionEvent', event);
-      const activeInteraction = getActiveInteraction(api);
+      const activeInteraction = getActiveInteraction(widgetApi);
       if (activeInteraction) {
         log('Active interaction found:', activeInteraction);
+        setHasActiveCall(true);
+      } else {
+        log('No active interaction found');
+        setHasActiveCall(false);
       }
     };
+    widgetApi.onDataEvent('onAnyInteractionEvent', handleInteractionEvent);
+    widgetApi.onDataEvent('onAnyInteractionEndedEvent', handleInteractionEvent);
 
     if (groups.length) {
       setSelectedGroupName(groups[0]?.name);
-      api.onDataEvent('onAnyInteractionEvent', handleInteractionEvent);
-      api.onDataEvent('onAnyInteractionEndedEvent', handleInteractionEvent);
     }
   }, [groups]);
 
@@ -51,7 +57,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
       log('Setting row data for group:', group.contacts);
       setRowData(group.contacts);
     }
-  }, [groups, selectedGroupName]);
+  }, [selectedGroupName]);
 
   // template for the actions column
   const actionsCell = ({ row }: any) => (
@@ -63,13 +69,17 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
       >
         <Button
           variant="primary"
-          disabled={isTransferDisabled}
+          disabled={!hasActiveCall || isConsulting}
           icon="call-transfer"
           onClick={() => {
-            const activeInteraction = getActiveInteraction(api);
+            const activeInteraction = getActiveInteraction(widgetApi);
             if (activeInteraction) {
               const interactionApi = getWidgetApi(activeInteraction?.id);
               interactionApi.consult(row.original.number);
+              setIsConsulting(true);
+              // the consult action takes a while to show changes in UI,
+              // so I added this timeout to give the impression of a delay
+              setTimeout(() => setIsConsulting(false), 2000);
             } else {
               log('No active interaction found');
             }
@@ -86,7 +96,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
           disabled={isCallDisabled}
           icon="call"
           onClick={() => {
-            api.startVoiceInteraction(row.original.number);
+            widgetApi.startVoiceInteraction(row.original.number);
           }}
         />
       </Tooltip>
