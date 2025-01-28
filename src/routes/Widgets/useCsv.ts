@@ -7,11 +7,7 @@ const groupDataByGroupName = (data: any) => {
   data.forEach((item: Contact, index: number) => {
     const { group: groupName } = item;
     if (!groupName) return;
-
     const group = groupList.find((g: ContactGroup) => g.name === groupName);
-    // eslint-disable-next-line no-console
-    console.info('Group Name:', groupName);
-
     if (!group) {
       groupList.push({
         id: index,
@@ -46,8 +42,6 @@ const useCsv = (url: string) => {
     fetchData();
   }, [url]);
 
-  // eslint-disable-next-line no-console
-  console.info('usecsv hook data:', data);
   return data;
 };
 
