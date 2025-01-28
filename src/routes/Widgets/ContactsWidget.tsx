@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Widget, WidgetHeader, Icon, WidgetContent } from '@avaya/neo-react';
 import ContactsList from './ContactsList.tsx';
 import useCsv from './useCsv.ts';
@@ -14,10 +14,7 @@ const ContactsWidget: React.FC<ContactsWidgetProps> = ({ baseUrl = 'http://127.0
   const sourceUrl = `${baseUrl}/assets/contacts.csv`;
   const title = 'Contacts List';
   const groupsList = useCsv(sourceUrl) as ContactGroup[];
-  useEffect(() => {
-    // eslint-disable-next-line no-console
-    console.log('Groups List:', groupsList);
-  }, [groupsList]);
+
   return (
     <Widget>
       <WidgetHeader>

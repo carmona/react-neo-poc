@@ -5,15 +5,11 @@ import React, { useEffect } from 'react';
 import './ContactsList.scss';
 import { Contact, ContactGroup } from './Contact.types.ts';
 import { getWidgetApi, getActiveInteraction } from './widgetApiTools.ts';
+import { logMessage } from './logger.ts';
 
 interface ContactsListProps {
   groups: ContactGroup[];
 }
-
-const log = (...args: any[]) => {
-  // eslint-disable-next-line no-console
-  console.info('MGM: ', ...args);
-};
 
 // main component controller
 const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps) => {
@@ -30,13 +26,13 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
   // this will run once the groups have been loaded
   useEffect(() => {
     const handleInteractionEvent = (event: any) => {
-      log('onAnyInteractionEvent', event);
+      logMessage('handleInteractionEvent: ', event);
       const activeInteraction = getActiveInteraction(widgetApi);
       if (activeInteraction) {
-        log('Active interaction found:', activeInteraction);
+        logMessage('handleInteractionEvent: Active interaction found:', activeInteraction);
         setHasActiveCall(true);
       } else {
-        log('No active interaction found');
+        logMessage('handleInteractionEvent: No active interaction found');
         setHasActiveCall(false);
       }
     };
@@ -54,7 +50,6 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
     if (!groups.length) return;
     const group = groups.find((g) => g.name === selectedGroupName);
     if (group) {
-      log('Setting row data for group:', group.contacts);
       setRowData(group.contacts);
     }
   }, [selectedGroupName]);
@@ -72,16 +67,19 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
           disabled={!hasActiveCall || isConsulting}
           icon="call-transfer"
           onClick={() => {
+            logMessage(`transfer: initiating transfer to ${row.original.number}`);
             const activeInteraction = getActiveInteraction(widgetApi);
             if (activeInteraction) {
               const interactionApi = getWidgetApi(activeInteraction?.id);
               interactionApi.consult(row.original.number);
               setIsConsulting(true);
+              logMessage('transfer: active interaction found:', activeInteraction);
+              logMessage(`transfer: concluding transfer to ${row.original.number}`);
               // the consult action takes a while to show changes in UI,
               // so I added this timeout to give the impression of a delay
               setTimeout(() => setIsConsulting(false), 2000);
             } else {
-              log('No active interaction found');
+              logMessage('transfer: No active interaction found, no transfer made');
             }
           }}
         />
@@ -97,6 +95,7 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
           icon="call"
           onClick={() => {
             widgetApi.startVoiceInteraction(row.original.number);
+            logMessage(`call: calling number ${row.original.number}`);
           }}
         />
       </Tooltip>
@@ -139,7 +138,9 @@ const ContactsList: React.FC<ContactsListProps> = ({ groups }: ContactsListProps
           </SelectOption>
         ))
       ) : (
-        <span>empty</span>
+        <SelectOption key={0} value="">
+          empty
+        </SelectOption>
       )}
     </Select>
   );

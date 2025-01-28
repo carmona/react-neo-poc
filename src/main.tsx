@@ -5,10 +5,10 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx';
 import { store } from './store/index.ts';
 import ContactsWidgetExport from './routes/Widgets/ContactsWidgetExport.tsx';
+import { logMessage } from './routes/Widgets/logger.ts';
 
 customElements.define('avaya-widget-mgm-contacts', ContactsWidgetExport);
-// eslint-disable-next-line no-console
-console.info('avaya-widget-mgm-contacts defined');
+logMessage('avaya-widget-mgm-contacts defined');
 
 const rootElement = document.getElementById('root');
 if (rootElement) {

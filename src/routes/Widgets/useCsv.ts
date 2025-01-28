@@ -1,6 +1,7 @@
 import Papa from 'papaparse';
 import { useState, useEffect } from 'react';
 import { Contact, ContactGroup } from './Contact.types.ts';
+import { logError, logMessage } from './logger.ts';
 
 const groupDataByGroupName = (data: any) => {
   const groupList: any[] = [];
@@ -33,9 +34,9 @@ const useCsv = (url: string) => {
         const parsedData = Papa.parse(text, { header: true });
         const groupedData = groupDataByGroupName(parsedData.data);
         setData(groupedData);
+        logMessage('CSV Loading success:', groupedData);
       } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Error fetching or parsing data:', error);
+        logError('CSV loading error:', error);
       }
     };
 
